@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Tugas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    /* FIX FOR ANDROID DATE PICKER */
+    .date-input-wrapper {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+    
+    .date-input-wrapper input[readonly] {
+      background-color: #fff;
+      cursor: pointer;
+      width: 100%;
+    }
+    
+    .date-input-wrapper .input-group-text {
+      background-color: #f8f9fa;
+      cursor: pointer;
+      pointer-events: none;
+    }
+    
+    .hidden-date-input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 10;
+    }
+    
+    .hidden-date-input::-webkit-calendar-picker-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      opacity: 0;
+    }
+    
+    /* Responsive fixes */
+    @media (max-width: 768px) {
+      .input-group {
+        position: relative;
+      }
+      
+      .input-group .form-control {
+        font-size: 16px !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-light d-flex flex-column min-vh-100">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="dashboard.html">
+      <i class="bi bi-speedometer2"></i> Dashboard Mahasiswa
+    </a>
+
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navPrivate">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navPrivate">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link active" href="tugas.html">Tugas</a></li>
+        <li class="nav-item"><a class="nav-link" href="kalender.html">Kalender</a></li>
+        <li class="nav-item"><a class="nav-link" href="statistik.html">Statistik</a></li>
+        <li class="nav-item"><a class="nav-link" href="profil.html">Profil</a></li>
+        <li class="nav-item ms-lg-2">
+          <button onclick="logout()" class="btn btn-outline-light">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<header class="bg-primary text-white py-4">
+  <div class="container">
+    <h2 class="fw-bold mb-1">Edit Tugas</h2>
+    <p class="lead mb-0">
+      Edit bukan berarti menunda. <strong>Supaya lebih terarah.</strong>
+    </p>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="flex-fill py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+
+        <div class="card shadow-sm">
+          <div class="card-body">
+
+            <form id="formEdit">
+
+              <div class="mb-3">
+                <label class="form-label">Judul Tugas</label>
+                <input id="judul" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Mata Kuliah</label>
+                <input id="matkul" class="form-control" required>
+              </div>
+
+              <!-- DEADLINE FIXED FOR ANDROID -->
+              <div class="mb-3">
+                <label class="form-label">Deadline</label>
+                <div class="date-input-wrapper">
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-calendar-event"></i>
+                    </span>
+                    <input
+                      id="deadlineDisplay"
+                      type="text"
+                      class="form-control"
+                      placeholder="DD/MM/YYYY"
+                      readonly
+                      required
+                    >
+                    <!-- Hidden date input untuk mobile -->
+                    <input
+                      id="deadlineInput"
+                      type="date"
+                      class="hidden-date-input"
+                      onchange="updateDeadlineDisplay(this.value)"
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label">Catatan Tambahan</label>
+                <textarea id="catatan" class="form-control" rows="3"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-save"></i> Simpan Perubahan
+              </button>
+
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-dark text-light py-3 mt-auto">
+  <div class="container text-center">
+    <p class="mb-1 fw-semibold">© 2026 Manajemen Tugas Mahasiswa</p>
+    <p class="small text-secondary mb-0">
+      Fokus hari ini, sukses di masa depan.
+    </p>
+  </div>
+</footer>
+
+<!-- MODAL BERHASIL -->
+<div class="modal fade"
+     id="successModal"
+     tabindex="-1"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-check-circle"></i> Perubahan Disimpan
+        </h5>
+      </div>
+      <div class="modal-body text-center">
+        <p class="mb-3">
+          Perubahan tugas berhasil disimpan 🎉
+        </p>
+        <button class="btn btn-success w-100" onclick="keDetail()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LOGOUT -->
+<div class="modal fade" id="logoutModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </h5>
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="mb-3">Yakin ingin keluar dari akun?</p>
+        <div class="d-grid gap-2">
+          <button class="btn btn-danger" onclick="confirmLogout()">Ya, Logout</button>
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/auth-check.js"></script>
+<script src="js/logout.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/tugas.js"></script>
+
+<script>
+  // Fungsi untuk update tampilan deadline
+  function updateDeadlineDisplay(dateValue) {
+    if (dateValue) {
+      const d = new Date(dateValue);
+      const dd = String(d.getDate()).padStart(2, "0");
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const yyyy = d.getFullYear();
+      document.getElementById('deadlineDisplay').value = `${dd}/${mm}/${yyyy}`;
+    }
+  }
+
+  // Fungsi untuk konversi DD/MM/YYYY ke YYYY-MM-DD
+  function convertToISODate(dateStr) {
+    if (!dateStr) return '';
+    const parts = dateStr.split('/');
+    if (parts.length === 3) {
+      return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return dateStr;
+  }
+
+  // Fungsi untuk konversi YYYY-MM-DD ke DD/MM/YYYY
+  function convertToDisplayDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    
+    const dd = String(d.getDate()).padStart(2, "0");
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const yyyy = d.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const id = getTaskId ? getTaskId() : (new URLSearchParams(window.location.search)).get('id');
+    const t = getTaskById ? getTaskById(id) : {};
+    
+    // Prefill data
+    if (t) {
+      document.getElementById('judul').value = t.judul || '';
+      document.getElementById('matkul').value = t.matkul || '';
+      document.getElementById('catatan').value = t.catatan || '';
+      
+      // Set deadline
+      if (t.deadline) {
+        const displayDate = convertToDisplayDate(t.deadline);
+        document.getElementById('deadlineDisplay').value = displayDate;
+        
+        // Konversi ke format YYYY-MM-DD untuk input date
+        const [dd, mm, yyyy] = displayDate.split('/');
+        if (dd && mm && yyyy) {
+          document.getElementById('deadlineInput').value = `${yyyy}-${mm}-${dd}`;
+        }
+      }
+    }
+    
+    // Setup date picker
+    const deadlineDisplay = document.getElementById('deadlineDisplay');
+    const deadlineInput = document.getElementById('deadlineInput');
+    const inputGroup = document.querySelector('.date-input-wrapper .input-group');
+    
+    // Handler untuk klik di mana saja di area input group
+    inputGroup.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Focus ke hidden input untuk trigger date picker
+      deadlineInput.focus();
+      deadlineInput.click();
+      
+      // Untuk iOS/Android, kita juga trigger showPicker jika supported
+      if (deadlineInput.showPicker) {
+        deadlineInput.showPicker();
+      }
+    });
+    
+    // Juga buat display input bisa diklik
+    deadlineDisplay.addEventListener('click', function(e) {
+      e.preventDefault();
+      deadlineInput.focus();
+      deadlineInput.click();
+      if (deadlineInput.showPicker) {
+        deadlineInput.showPicker();
+      }
+    });
+    
+    // Handler untuk perubahan tanggal
+    deadlineInput.addEventListener('change', function() {
+      updateDeadlineDisplay(this.value);
+    });
+    
+    // Jika deadline kosong, set default ke hari ini
+    if (!deadlineInput.value) {
+      deadlineInput.value = new Date().toISOString().split('T')[0];
+      updateDeadlineDisplay(deadlineInput.value);
+    }
+  });
+
+  const modalSuccess = new bootstrap.Modal(
+    document.getElementById("successModal")
+  );
+
+  document.getElementById("formEdit").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const id = getTaskId ? getTaskId() : (new URLSearchParams(window.location.search)).get('id');
+    const tasks = getTasks ? getTasks() : JSON.parse(localStorage.getItem('tasks') || '[]');
+    const i = tasks.findIndex(x => x.id === id);
+
+    if (i === -1) {
+      alert('Tugas tidak ditemukan');
+      return;
+    }
+
+    const deadlineDisplay = document.getElementById('deadlineDisplay').value;
+    const deadlineInput = document.getElementById('deadlineInput').value;
+    
+    // Gunakan nilai yang ada di input hidden (YYYY-MM-DD) jika ada
+    let deadlineValue = '';
+    if (deadlineInput) {
+      deadlineValue = deadlineInput; // Sudah dalam format YYYY-MM-DD
+    } else if (deadlineDisplay) {
+      // Konversi dari DD/MM/YYYY ke YYYY-MM-DD
+      deadlineValue = convertToISODate(deadlineDisplay);
+    }
+
+    tasks[i].judul = document.getElementById('judul').value;
+    tasks[i].matkul = document.getElementById('matkul').value;
+    tasks[i].deadline = deadlineValue;
+    tasks[i].catatan = document.getElementById('catatan').value;
+
+    if (saveTasks) {
+      saveTasks(tasks);
+    } else {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+    
+    modalSuccess.show();
+  });
+
+  function keDetail() {
+    const id = getTaskId ? getTaskId() : (new URLSearchParams(window.location.search)).get('id');
+    location.href = "detail_tugas.html?id=" + id;
+  }
+</script>
+
+</body>
+</html>

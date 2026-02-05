@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Tambah Tugas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    /* FIX FOR ANDROID DATE PICKER */
+    .date-input-wrapper {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+    
+    .date-input-wrapper input[readonly] {
+      background-color: #fff;
+      cursor: pointer;
+      width: 100%;
+    }
+    
+    .date-input-wrapper .input-group-text {
+      background-color: #f8f9fa;
+      cursor: pointer;
+      pointer-events: none;
+    }
+    
+    .hidden-date-input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 10;
+    }
+    
+    .hidden-date-input::-webkit-calendar-picker-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      opacity: 0;
+    }
+    
+    /* Responsive fixes */
+    @media (max-width: 768px) {
+      .input-group {
+        position: relative;
+      }
+      
+      .input-group .form-control {
+        font-size: 16px !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-light d-flex flex-column min-vh-100">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="dashboard.html">
+      <i class="bi bi-speedometer2"></i> Dashboard Mahasiswa
+    </a>
+
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navPrivate">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navPrivate">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link active" href="tugas.html">Tugas</a></li>
+        <li class="nav-item"><a class="nav-link" href="kalender.html">Kalender</a></li>
+        <li class="nav-item"><a class="nav-link" href="statistik.html">Statistik</a></li>
+        <li class="nav-item"><a class="nav-link" href="profil.html">Profil</a></li>
+        <li class="nav-item ms-lg-2">
+          <button onclick="logout()" class="btn btn-outline-light">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<header class="bg-primary text-white py-4">
+  <div class="container">
+    <h2 class="fw-bold mb-1">Tambah Tugas Baru</h2>
+    <p class="lead mb-0">
+      Catat sekarang. <strong>Deadline tidak peduli kamu siap atau tidak.</strong>
+    </p>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="flex-fill d-flex align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+
+        <div class="card shadow-sm">
+          <div class="card-body">
+
+            <form id="formTambah">
+
+              <div class="mb-3">
+                <label class="form-label">Judul Tugas</label>
+                <input id="judul" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Mata Kuliah</label>
+                <input id="matkul" class="form-control" required>
+              </div>
+
+              <!-- DEADLINE FIXED FOR ANDROID -->
+              <div class="mb-3">
+                <label class="form-label">Deadline</label>
+                <div class="date-input-wrapper">
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-calendar-event"></i>
+                    </span>
+                    <input
+                      id="deadlineDisplay"
+                      type="text"
+                      class="form-control"
+                      placeholder="DD/MM/YYYY"
+                      readonly
+                      required
+                    >
+                    <!-- Hidden date input untuk mobile -->
+                    <input
+                      id="deadlineInput"
+                      type="date"
+                      class="hidden-date-input"
+                    >
+                  </div>
+                </div>
+                <!-- Hidden input untuk deadline value asli -->
+                <input type="hidden" id="deadline" name="deadline">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Prioritas</label>
+                <select id="prioritas" class="form-select">
+                  <option value="Rendah">Rendah</option>
+                  <option value="Sedang" selected>Sedang</option>
+                  <option value="Tinggi">Tinggi</option>
+                </select>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label">Catatan</label>
+                <textarea id="catatan" class="form-control" rows="3"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-save"></i> Simpan Tugas
+              </button>
+
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-dark text-light py-3 mt-auto">
+  <div class="container text-center">
+    <p class="mb-1 fw-semibold">© 2026 Manajemen Tugas Mahasiswa</p>
+    <p class="small text-secondary mb-0">
+      Fokus hari ini, sukses di masa depan.
+    </p>
+  </div>
+</footer>
+
+<!-- MODAL BERHASIL -->
+<div class="modal fade" id="successModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-check-circle"></i> Berhasil
+        </h5>
+      </div>
+      <div class="modal-body text-center">
+        <p class="mb-3">
+          Tugas berhasil disimpan 🎉
+        </p>
+        <button class="btn btn-success w-100" onclick="keDaftar()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LOGOUT -->
+<div class="modal fade" id="logoutModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </h5>
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="mb-3">Yakin ingin keluar dari akun?</p>
+        <div class="d-grid gap-2">
+          <button class="btn btn-danger" onclick="confirmLogout()">Ya, Logout</button>
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/auth-check.js"></script>
+<script src="js/logout.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/tugas.js"></script>
+
+<script>
+  // Inisialisasi variabel
+  let modalSuccess = null;
+  
+  // Fungsi yang diperlukan dari tugas.js
+  // (jika tidak ada di file tugas.js, kita buat disini)
+  function getTasks() {
+    return JSON.parse(localStorage.getItem('tasks')) || [];
+  }
+  
+  function saveTasks(tasks) {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+  
+  function generateId() {
+    return Date.now() + Math.floor(Math.random() * 1000);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Inisialisasi modal
+    modalSuccess = new bootstrap.Modal(document.getElementById("successModal"));
+    
+    // Setup date picker
+    setupDatePicker();
+    
+    // Setup form submission
+    setupFormSubmission();
+  });
+
+  // Fungsi untuk setup date picker
+  function setupDatePicker() {
+    const deadlineDisplay = document.getElementById('deadlineDisplay');
+    const deadlineInput = document.getElementById('deadlineInput');
+    const deadlineHidden = document.getElementById('deadline');
+    const inputGroup = document.querySelector('.date-input-wrapper .input-group');
+    
+    // Handler untuk klik di area input group
+    if (inputGroup) {
+      inputGroup.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Set tanggal minimum ke hari ini
+        const today = new Date().toISOString().split('T')[0];
+        deadlineInput.min = today;
+        
+        // Trigger date picker
+        deadlineInput.focus();
+        deadlineInput.click();
+        
+        if (deadlineInput.showPicker) {
+          deadlineInput.showPicker();
+        }
+      });
+    }
+    
+    // Handler untuk perubahan tanggal
+    deadlineInput.addEventListener('change', function() {
+      updateDeadlineDisplay(this.value);
+    });
+    
+    // Set default date (hari ini)
+    const today = new Date().toISOString().split('T')[0];
+    deadlineInput.value = today;
+    updateDeadlineDisplay(today);
+  }
+
+  // Fungsi untuk update tampilan deadline
+  function updateDeadlineDisplay(dateValue) {
+    if (dateValue) {
+      const d = new Date(dateValue);
+      const dd = String(d.getDate()).padStart(2, "0");
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const yyyy = d.getFullYear();
+      
+      // Format untuk display: DD/MM/YYYY
+      document.getElementById('deadlineDisplay').value = `${dd}/${mm}/${yyyy}`;
+      
+      // Format untuk hidden input: YYYY-MM-DD (sesuai tugas.js)
+      document.getElementById('deadline').value = dateValue;
+    }
+  }
+
+  // Fungsi untuk setup form submission
+  function setupFormSubmission() {
+    const formTambah = document.getElementById("formTambah");
+    
+    if (!formTambah) return;
+    
+    formTambah.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Validasi input
+      const judul = document.getElementById('judul').value.trim();
+      const matkul = document.getElementById('matkul').value.trim();
+      const deadline = document.getElementById('deadline').value;
+      
+      if (!judul) {
+        alert('Judul tugas harus diisi');
+        document.getElementById('judul').focus();
+        return;
+      }
+      
+      if (!matkul) {
+        alert('Mata kuliah harus diisi');
+        document.getElementById('matkul').focus();
+        return;
+      }
+      
+      if (!deadline) {
+        alert('Harap pilih deadline terlebih dahulu');
+        if (document.querySelector('.date-input-wrapper')) {
+          document.querySelector('.date-input-wrapper').click();
+        }
+        return;
+      }
+      
+      // Siapkan data untuk disimpan
+      // Update hidden deadline field dengan nilai yang benar
+      const deadlineInput = document.getElementById('deadlineInput').value;
+      if (deadlineInput) {
+        document.getElementById('deadline').value = deadlineInput;
+      }
+      
+      // Ambil data lainnya
+      const deadlineValue = document.getElementById('deadline').value;
+      const prioritas = document.getElementById('prioritas').value;
+      const catatan = document.getElementById('catatan').value.trim();
+      
+      // Coba panggil fungsi tambahTugas dari tugas.js
+      if (typeof tambahTugas === 'function') {
+        // Set nilai ke form inputs sesuai yang diharapkan fungsi tambahTugas
+        document.getElementById('deadline').value = deadlineValue;
+        
+        // Simpan tugas ke localStorage
+        const tasks = getTasks();
+        const tugas = {
+          id: generateId(),
+          judul: judul,
+          matkul: matkul,
+          deadline: deadlineValue,
+          prioritas: prioritas,
+          status: "Belum",
+          pinned: false,
+          catatan: catatan
+        };
+        
+        tasks.push(tugas);
+        saveTasks(tasks);
+        
+        // Tampilkan modal sukses
+        modalSuccess.show();
+        
+        // Reset form setelah 500ms
+        setTimeout(() => {
+          formTambah.reset();
+          // Reset tanggal ke hari ini
+          const today = new Date().toISOString().split('T')[0];
+          document.getElementById('deadlineInput').value = today;
+          updateDeadlineDisplay(today);
+        }, 500);
+        
+      } else {
+        // Fallback jika fungsi tidak ditemukan
+        const tasks = getTasks();
+        const tugas = {
+          id: generateId(),
+          judul: judul,
+          matkul: matkul,
+          deadline: deadlineValue,
+          prioritas: prioritas,
+          status: "Belum",
+          pinned: false,
+          catatan: catatan
+        };
+        
+        tasks.push(tugas);
+        saveTasks(tasks);
+        
+        // Tampilkan modal sukses
+        modalSuccess.show();
+        
+        // Reset form setelah 500ms
+        setTimeout(() => {
+          formTambah.reset();
+          const today = new Date().toISOString().split('T')[0];
+          document.getElementById('deadlineInput').value = today;
+          updateDeadlineDisplay(today);
+        }, 500);
+      }
+    });
+  }
+
+  // Fungsi untuk navigasi ke halaman tugas
+  function keDaftar() {
+    window.location.href = "tugas.html";
+  }
+
+  // Fungsi untuk logout
+  function logout() {
+    const logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+    logoutModal.show();
+  }
+
+  // Fungsi untuk konfirmasi logout
+  function confirmLogout() {
+    // Hapus data sesi/login
+    localStorage.removeItem('userLoggedIn');
+    localStorage.removeItem('username');
+    
+    // Redirect ke halaman login
+    window.location.href = "index.html";
+  }
+</script>
+
+</body>
+</html>

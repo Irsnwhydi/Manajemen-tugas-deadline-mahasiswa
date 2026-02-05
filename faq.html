@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>FAQ | Manajemen Tugas Mahasiswa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">
+      <i class="bi bi-journal-check"></i> Manajemen Tugas
+    </a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link" href="fitur.html">Fitur</a></li>
+        <li class="nav-item"><a class="nav-link" href="layanan-joki.html">Layanan</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">Tentang</a></li>
+        <li class="nav-item"><a class="nav-link active" href="faq.html">FAQ</a></li>
+        <li class="nav-item"><a class="nav-link" href="kontak.html">Kontak</a></li>
+        <li class="nav-item">
+          <a class="btn btn-outline-light ms-lg-2" href="login.html">Login</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<section class="py-5 bg-primary text-white">
+  <div class="container text-center">
+    <h1 class="fw-bold">Frequently Asked Questions (FAQ)</h1>
+    <p class="lead mt-2">
+      Pertanyaan yang sering diajukan seputar penggunaan aplikasi
+      Manajemen Tugas Mahasiswa
+    </p>
+  </div>
+</section>
+
+<!-- FAQ CONTENT -->
+<section class="py-5">
+  <div class="container">
+
+    <div class="accordion shadow-sm" id="faqAccordion">
+
+      <!-- ITEM 1 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq1">
+            Apakah aplikasi ini gratis digunakan?
+          </button>
+        </h2>
+        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+          <div class="accordion-body text-muted">
+            Ya. Aplikasi Manajemen Tugas Mahasiswa sepenuhnya gratis dan
+            dapat digunakan oleh semua mahasiswa tanpa biaya apa pun.
+          </div>
+        </div>
+      </div>
+
+      <!-- ITEM 2 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq2">
+            Apakah saya harus login untuk menggunakan aplikasi?
+          </button>
+        </h2>
+        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div class="accordion-body text-muted">
+            Ya. Login diperlukan untuk mengakses fitur utama seperti
+            dashboard, manajemen tugas, kalender, dan statistik agar data
+            tersimpan dengan aman di browser.
+          </div>
+        </div>
+      </div>
+
+      <!-- ITEM 3 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq3">
+            Apakah aplikasi ini menggunakan backend atau database?
+          </button>
+        </h2>
+        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div class="accordion-body text-muted">
+            Tidak. Aplikasi ini bersifat frontend-only dan seluruh data
+            disimpan menggunakan LocalStorage browser pengguna.
+          </div>
+        </div>
+      </div>
+
+      <!-- ITEM 4 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq4">
+            Apakah data saya aman?
+          </button>
+        </h2>
+        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div class="accordion-body text-muted">
+            Data hanya tersimpan di browser masing-masing pengguna.
+            Selama browser tidak dihapus atau dibersihkan, data akan tetap tersedia.
+          </div>
+        </div>
+      </div>
+
+      <!-- ITEM 5 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq5">
+            Apakah aplikasi ini bisa diakses di HP?
+          </button>
+        </h2>
+        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div class="accordion-body text-muted">
+            Bisa. Aplikasi ini dirancang menggunakan konsep mobile-first
+            dan responsif di perangkat mobile, tablet, maupun desktop.
+          </div>
+        </div>
+      </div>
+
+      <!-- ITEM 6 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq6">
+            Apa itu fitur layanan joki tugas?
+          </button>
+        </h2>
+        <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div class="accordion-body text-muted">
+            Fitur ini hanya menyediakan informasi layanan joki tugas sebagai
+            alternatif non-akademik. Semua transaksi dilakukan di luar sistem
+            aplikasi dengan disclaimer yang jelas.
+          </div>
+        </div>
+      </div>
+
+      <!-- ITEM 7 -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed fw-semibold" data-bs-toggle="collapse" data-bs-target="#faq7">
+      Butuh motivasi hari ini?
+    </button>
+  </h2>
+  <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+    <div class="accordion-body text-muted">
+      Jangan menyerah hanya karena hari ini terasa berat. 
+      Setiap langkah kecil yang kamu ambil sedang membangun versi dirimu yang lebih kuat. 
+      Terus bergerak, tetap konsisten, dan percaya: usaha tidak pernah mengkhianati hasil 💪🔥
+    </div>
+  </div>
+</div>
+
+
+    </div>
+
+    <!-- INFO BOX -->
+    <div class="alert alert-info mt-5 shadow-sm">
+      <i class="bi bi-info-circle-fill"></i>
+      Jika pertanyaan Anda belum terjawab, silakan kunjungi halaman
+      <a href="kontak.html" class="alert-link">Kontak</a> untuk menghubungi kami.
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-dark text-light py-4">
+  <div class="container text-center">
+    <p class="mb-1 fw-semibold">© 2026 Manajemen Tugas Mahasiswa</p>
+    <p class="small text-secondary mb-0">
+      Dibuat dengan penuh cinta untuk membantu mahasiswa mengelola tugas mereka lebih baik.
+    </p>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
